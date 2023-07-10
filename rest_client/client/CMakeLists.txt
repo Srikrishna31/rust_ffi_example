@@ -1,3 +1,5 @@
+set(CMAKE_CXX_STANDARD 17)
+
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CARGO_CMD cargo build)
     set(TARGET_DIR "debug")
@@ -8,12 +10,21 @@ endif()
 
 set(CLIENT_SO "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_DIR}/libclient${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
+# For windows, we have to decouple each of the commands into separate function calls.
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cpluscplus")
+
 set(CARGO_TARGET_DIR ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_target(client ALL
     COMMENT "Compiling client module"
     COMMAND ${CARGO_CMD}
-    COMMAND copy ${CLIENT_SO} ${CMAKE_CURRENT_BINARY_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_custom_command(OUTPUT ${CLIENT_SO}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CLIENT_SO} ${CMAKE_CURRENT_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        DEPENDS client
+)
 
 set_target_properties(client PROPERTIES LOCATION ${CMAKE_CURRENT_BINARY_DIR})
 
