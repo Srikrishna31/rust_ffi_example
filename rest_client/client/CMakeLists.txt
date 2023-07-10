@@ -16,7 +16,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cpluscplus")
 set(CARGO_TARGET_DIR ${CMAKE_CURRENT_BINARY_DIR})
 add_custom_target(client ALL
     COMMENT "Compiling client module"
-    COMMAND ${CARGO_CMD}
+        COMMAND ${CARGO_CMD}
+#    # https://superuser.com/questions/1049430/how-do-you-set-environment-variables-for-a-single-command-on-windows
+#    COMMAND set "CARGO_TARGET_DIR=${CMAKE_CURRENT_BINARY_DIR} &&" ${CARGO_CMD}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 MESSAGE("Current Binary Directory: ${CMAKE_CURRENT_BINARY_DIR}")
