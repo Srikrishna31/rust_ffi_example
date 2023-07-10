@@ -11,4 +11,4 @@ repository = "https://gihub.com/Srikrishna31/rust_ffi_example"
 [dependencies]
 
 [lib]
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
