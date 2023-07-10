@@ -8,7 +8,7 @@ else ()
     set(TARGET_DIR "release")
 endif()
 
-set(CLIENT_SO "${CMAKE_CURRENT_BINARY_DIR}/${TARGET_DIR}/libclient${CMAKE_SHARED_LIBRARY_SUFFIX}")
+set(CLIENT_SO "${CMAKE_SOURCE_DIR}/client/target/${TARGET_DIR}/client${CMAKE_SHARED_LIBRARY_SUFFIX}")
 
 # For windows, we have to decouple each of the commands into separate function calls.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zc:__cpluscplus")
@@ -19,7 +19,9 @@ add_custom_target(client ALL
     COMMAND ${CARGO_CMD}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_custom_command(OUTPUT ${CLIENT_SO}
+MESSAGE("Current Binary Directory: ${CMAKE_CURRENT_BINARY_DIR}")
+
+add_custom_command(TARGET client
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${CLIENT_SO} ${CMAKE_CURRENT_BINARY_DIR}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
