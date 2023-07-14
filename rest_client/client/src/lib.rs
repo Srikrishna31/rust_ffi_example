@@ -13,11 +13,11 @@ extern crate libc;
 extern crate log;
 extern crate reqwest;
 
-use response::Response;
+use crate::errors::*;
 use request::Request;
 use reqwest::Client;
-use crate::errors::ResultExt;
-use crate::errors::Error;
+use response::Resp;
+use std::io::Read;
 
 #[no_mangle]
 pub extern "C" fn hello_world() {
@@ -25,12 +25,12 @@ pub extern "C" fn hello_world() {
 }
 
 /// Send a `Request`
-pub fn send_request(req: &Request) -> Result<Response, Error> {
+pub fn send_request(req: &Request) -> Result<Resp> {
     info!("Sending a GET request to {}", req.destination);
     if log_enabled!(::log::Level::Debug) {
         debug!("Sending {} Headers", req.headers.len());
-        for header in req.headers.iter() {
-            debug!("\t{} = {}", header.name(), header.value_string());
+        for (name, value) in req.headers.iter() {
+            debug!("\t{} = {}", name, value.to_str().unwrap());
         }
         for cookie in req.cookies.iter() {
             debug!("\t{} = {}", cookie.name(), cookie.value());
@@ -45,5 +45,5 @@ pub fn send_request(req: &Request) -> Result<Response, Error> {
     client
         .execute(req.to_reqwest())
         .chain_err(|| "The request failed")
-        .and_then(|r| Response::from_reqwest(r))
+        .and_then(|r| Resp::from_reqwest(r))
 }

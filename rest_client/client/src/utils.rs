@@ -1,7 +1,7 @@
-use std::sync::Once;
+use chrono::Local;
 use fern;
 use log::LevelFilter;
-use chrono::Local;
+use std::sync::Once;
 
 use crate::errors::*;
 
@@ -15,16 +15,14 @@ pub extern "C" fn initialize_logging() {
     INITIALIZE.call_once(|| {
         fern::Dispatch::new()
             .format(|out, message, record| {
-                let loc = record.location();
-
                 out.finish(format_args!(
                     "{} {:7} ({}#{}): {}{}",
                     Local::now().format("[%Y-%m-%d][%H:%M:%S]"),
                     record.level(),
-                    loc.module_path(),
-                    loc.line(),
+                    record.module_path().or_else(|| Option::from("")).unwrap(),
+                    record.line().or_else(|| Option::from(0)).unwrap(),
                     message,
-                    if cfg!(windows) {"\r"} else {""}
+                    if cfg!(windows) { "\r" } else { "" }
                 ))
             })
             .level(LevelFilter::Debug)
