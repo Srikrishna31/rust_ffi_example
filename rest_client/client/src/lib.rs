@@ -1,4 +1,5 @@
 pub mod errors;
+pub mod ffi;
 mod request;
 mod response;
 pub mod utils;
