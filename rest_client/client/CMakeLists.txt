@@ -24,6 +24,7 @@ MESSAGE("Current Binary Directory: ${CMAKE_CURRENT_BINARY_DIR}")
 add_custom_command(TARGET client
         POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${CLIENT_SO} ${CMAKE_CURRENT_BINARY_DIR}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/client/target/client.hpp ${CMAKE_CURRENT_BINARY_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy ${CLIENT_SO}.lib ${CMAKE_CURRENT_BINARY_DIR}
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         DEPENDS client

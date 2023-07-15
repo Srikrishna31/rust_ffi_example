@@ -17,6 +17,8 @@ log = "0.4.19"
 libc = "0.2.146"
 chrono = "0.4.26"
 
+[build-dependencies]
+cbindgen = "0.24.5"
 
 [lib]
 crate-type = ["cdylib", "lib"]

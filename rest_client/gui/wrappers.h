@@ -6,14 +6,15 @@
 #define REST_CLIENT_WRAPPERS_H
 #include <string>
 #include <vector>
+#include "client.hpp"
 
 class Response {
 public:
-    Response(void* raw) : raw(raw) {}
+    Response(ffi::Resp* raw) : raw(raw) {}
     ~Response();
     auto read_body() -> std::vector<char>;
 private:
-    void* raw;
+    ffi::Resp* raw;
 };
 
 class Request {
@@ -22,7 +23,7 @@ public:
     ~Request();
     auto send() -> Response;
 private:
-    void* raw;
+    ffi::Request* raw;
 };
 
 #endif //REST_CLIENT_WRAPPERS_H

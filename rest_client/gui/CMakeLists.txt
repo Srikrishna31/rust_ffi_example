@@ -14,6 +14,9 @@ else ()
     set(BUILD_SUFFIX "")
 endif()
 
+set(CLIENT_BUILD_DIR ${CMAKE_BINARY_DIR}/client)
+include_directories(${CLIENT_BUILD_DIR})
+
 set(SOURCE main_window.hpp main.cpp main_window.cpp main_window.hpp wrappers.h wrappers.cpp)
 add_executable(gui ${SOURCE})
 get_target_property(CLIENT_DIR client LOCATION)

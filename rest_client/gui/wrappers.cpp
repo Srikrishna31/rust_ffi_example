@@ -3,19 +3,8 @@
 //
 #include "wrappers.h"
 
-extern "C" {
-    void* request_create(const char*);
-    void request_destroy(void*);
-
-    void response_destroy(void*);
-    int response_body_length(void*);
-    int response_body(void*, char*, int);
-
-    void * request_send(void*);
-}
-
 Request::Request(const std::string& url) {
-    raw = request_create(url.c_str());
+    raw = ffi::request_create(url.c_str());
     if (raw == nullptr) {
         throw "Invalid URL";
     }
@@ -26,7 +15,7 @@ Request::~Request() {
 }
 
 auto Request::send() -> Response {
-    void* raw_response = request_send(raw);
+    ffi::Resp* raw_response = request_send(raw);
 
     if (raw_response == nullptr) {
         throw "Request failed";
