@@ -38,6 +38,7 @@ pub unsafe extern "C" fn request_create(url: *const c_char) -> *mut Request {
 
     let req = Request::new(parsed_url, Method::GET);
 
+    println!("Request created in Rust: {}", url_as_str);
     Box::into_raw(Box::new(req))
 }
 
@@ -45,6 +46,7 @@ pub unsafe extern "C" fn request_create(url: *const c_char) -> *mut Request {
 #[no_mangle]
 pub unsafe extern "C" fn request_destroy(req: *mut Request) {
     if !req.is_null() {
+        println!("Request was destroyed");
         drop(Box::from_raw(req));
     }
 }

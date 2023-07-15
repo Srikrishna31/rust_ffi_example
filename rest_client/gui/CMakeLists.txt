@@ -14,7 +14,7 @@ else ()
     set(BUILD_SUFFIX "")
 endif()
 
-set(SOURCE main_window.hpp main.cpp main_window.cpp main_window.hpp)
+set(SOURCE main_window.hpp main.cpp main_window.cpp main_window.hpp wrappers.h wrappers.cpp)
 add_executable(gui ${SOURCE})
 get_target_property(CLIENT_DIR client LOCATION)
 

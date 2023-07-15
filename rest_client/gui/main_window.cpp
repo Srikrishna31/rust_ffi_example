@@ -1,12 +1,15 @@
 #include "main_window.hpp"
+#include "wrappers.h"
+#include <iostream>
 
 extern "C" {
     void hello_world();
 }
 
 void MainWindow::onClick() {
-    // Call the `hello_world` function to print a message to stdout
-    hello_world();
+    std::cout << "Creating the request" << std::endl;
+    Request req("https://google.com");
+    std::cout << "Request created in C++" << std::endl;
 }
 
 MainWindow::MainWindow(QWidget *parent)
