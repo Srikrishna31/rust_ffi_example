@@ -1,7 +1,7 @@
 use reqwest::{self, header::HeaderMap, Method, Url};
 //use reqwest::cookies::;
 use cookie::CookieJar;
-
+use reqwest::cookie::Cookie;
 /// A HTTP Request.
 #[derive(Debug, Clone)]
 pub struct Request {
@@ -31,17 +31,18 @@ impl Request {
             r.headers_mut().append(name, value.clone());
         }
 
+        // TODO: Figure out copying of cookies
         // let mut cookie_header = Cookie::new("", "");
-        r.headers_mut().append(
-            "Cookie: ",
-            self.cookies
-                .iter()
-                .fold("".to_string(), |acc, val| {
-                    acc + &*format!(" {}={};", val.name(), val.value())
-                })
-                .parse()
-                .unwrap(),
-        );
+        // r.headers_mut().append(
+        //     "Cookie: ",
+        //     self.cookies
+        //         .iter()
+        //         .fold("".to_string(), |acc, val| {
+        //             acc + &*format!(" {}={};", val.name(), val.value())
+        //         })
+        //         .parse()
+        //         .unwrap(),
+        // );
 
         // for cookie in self.cookies.iter() {
         //     cookie_header.set(cookie.name().to_owned(), cookie.value().to_owned());
