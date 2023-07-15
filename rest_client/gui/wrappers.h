@@ -8,6 +8,17 @@
 #include <vector>
 #include "client.hpp"
 
+class WrapperException : std::exception {
+public:
+    WrapperException(const std::string& msg) : msg(msg) {};
+    static auto last_error() -> WrapperException;
+    auto what() const throw() -> const char* {
+        return msg.c_str();
+    }
+private:
+    std::string msg;
+};
+
 class Response {
 public:
     Response(ffi::Resp* raw) : raw(raw) {}

@@ -2,6 +2,32 @@
 // Created by coolk on 15-07-2023.
 //
 #include "wrappers.h"
+auto last_error_message() -> std::string {
+    auto error_length = ffi::last_error_length();
+
+    if (error_length == 0) {
+        return std::string{};
+    }
+
+    auto msg = std::string(error_length, '\0');
+    auto ret = ffi::last_error_message(&msg[0], msg.length());
+    if (ret <= 0) {
+        // If we ever get here it's a bug
+        throw new WrapperException("Fetching error message failed");
+    }
+
+    return msg;
+}
+
+auto WrapperException::last_error() -> WrapperException {
+    auto msg = last_error_message();
+
+    if (msg.length() == 0) {
+        return WrapperException("(no error available)");
+    } else {
+        return WrapperException(msg);
+    }
+}
 
 Request::Request(const std::string& url) {
     raw = ffi::request_create(url.c_str());
