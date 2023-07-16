@@ -1,6 +1,8 @@
 pub mod errors;
 pub mod ffi;
+mod plugin_manager;
 mod request;
+mod request_response_plugin;
 mod response;
 pub mod utils;
 
@@ -20,10 +22,9 @@ use reqwest::Client;
 use response::Resp;
 use std::io::Read;
 
-#[no_mangle]
-pub extern "C" fn hello_world() {
-    println!("Hello World");
-}
+pub use request_response_plugin::RequestResponsePlugin;
+// Re-export this definition so that plugin implementations can use this.
+pub use plugin_framework::declare_plugin;
 
 /// Send a `Request`
 pub fn send_request(req: &Request) -> Result<Resp> {
