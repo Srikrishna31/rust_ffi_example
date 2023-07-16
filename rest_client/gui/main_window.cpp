@@ -3,10 +3,6 @@
 #include <iostream>
 #include <QMessageBox>
 
-extern "C" {
-    void hello_world();
-}
-
 void MainWindow::onClick() {
     try {
         std::cout << "Creating the request" << std::endl;

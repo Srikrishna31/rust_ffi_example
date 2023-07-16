@@ -21,9 +21,9 @@ impl Resp {
         let mut body = Vec::new();
         original
             .read_to_end(&mut body)
-            .chain_err(|| "Unable to read the response body")
-            //TODO: For some strange reason, ? operator is not working with error_chain.
-            .expect("Error reading the response");
+            .chain_err(|| "Unable to read the response body")?;
+        //TODO: For some strange reason, ? operator is not working with error_chain.
+        // .expect("Error reading the response");
 
         Ok(Resp {
             status,
